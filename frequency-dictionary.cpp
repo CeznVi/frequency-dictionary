@@ -1,20 +1,92 @@
-﻿// frequency-dictionary.cpp : Этот файл содержит функцию "main". Здесь начинается и заканчивается выполнение программы.
-//
+﻿#include <iostream>
+#include <Windows.h>
+#include <fstream>
+#include <string>
+#include <map>
 
-#include <iostream>
+using std::cout;
+using std::cin;
+using std::ifstream;
+using std::string;
+using std::map;
+
+
+bool check(const char c, const string s)
+{
+	for (size_t i{}; i < s.length(); i++)
+	{
+		if (c == s[i])
+			return false;
+	}
+	return true;
+}
+
+
 
 int main()
 {
-    std::cout << "Hello World!\n";
+    SetConsoleCP(1251);
+    SetConsoleOutputCP(1251);
+		
+	string text;
+	char temp{};
+
+
+	ifstream fin;
+	string noread = "\"!@#$%^&*()_+-=\|?/><,.~\n1234567890";
+
+	map <string, int> m;
+
+
+
+
+
+
+
+	fin.open("text.txt", std::ios::in);
+
+	if (!fin)
+	{
+		std::cerr << "Помилка читання файлу...\n";
+		exit(1);
+	}
+	//else
+	//	cout << "Файл завантажено\n";
+
+	if (fin.is_open())
+	{
+		while (fin.read(&temp, sizeof(char)))
+		{
+			if (check(temp, noread))
+			{
+				if (temp != char(32))
+					text += temp;
+				else if (temp == char(32))
+				{
+					//m.insert(make_pair(text,+1));
+					m.emplace(text,0);
+					m[text] += 1;
+					text.clear();
+				}
+			}
+		}
+			
+	}
+
+
+	fin.close();
+	
+
+
+
+	cout << text;
+
+	
+	for (auto n : m)
+	{
+		cout << n.first << " --- " << n.second << '\n';
+	}
+
+
+    return 0;
 }
-
-// Запуск программы: CTRL+F5 или меню "Отладка" > "Запуск без отладки"
-// Отладка программы: F5 или меню "Отладка" > "Запустить отладку"
-
-// Советы по началу работы 
-//   1. В окне обозревателя решений можно добавлять файлы и управлять ими.
-//   2. В окне Team Explorer можно подключиться к системе управления версиями.
-//   3. В окне "Выходные данные" можно просматривать выходные данные сборки и другие сообщения.
-//   4. В окне "Список ошибок" можно просматривать ошибки.
-//   5. Последовательно выберите пункты меню "Проект" > "Добавить новый элемент", чтобы создать файлы кода, или "Проект" > "Добавить существующий элемент", чтобы добавить в проект существующие файлы кода.
-//   6. Чтобы снова открыть этот проект позже, выберите пункты меню "Файл" > "Открыть" > "Проект" и выберите SLN-файл.
