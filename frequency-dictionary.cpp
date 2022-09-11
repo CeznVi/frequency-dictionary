@@ -23,19 +23,27 @@ bool check(const char c, const string s)
 
 
 
+
+
 int main()
 {
-    SetConsoleCP(1251);
-    SetConsoleOutputCP(1251);
-		
+	SetConsoleCP(1251);
+	SetConsoleOutputCP(1251);
+
 	string text;
 	char temp{};
 
 
 	ifstream fin;
-	string noread = "\"!@#$%^&*()_+-=\|?/><,.~\n1234567890";
+	//string noread = "\n\"'!@#$%^&*()_+-=\/><?,.~1234567890";
+	string noread = "0123456789!@#$%^&*()-_=+*/?.,<>~|';:\"\n\r\t";
+	
+
+
+
 
 	map <string, int> m;
+
 
 
 
@@ -64,29 +72,55 @@ int main()
 				else if (temp == char(32))
 				{
 					//m.insert(make_pair(text,+1));
-					m.emplace(text,0);
+					m.emplace(text, 0);
 					m[text] += 1;
 					text.clear();
 				}
 			}
-		}
+			else
+			{
+				m.emplace(text, 0);
+				m[text] += 1;
+				text.clear();
+			}
 			
+		}
 	}
 
 
 	fin.close();
-	
 
 
-
-	cout << text;
-
-	
 	for (auto n : m)
 	{
 		cout << n.first << " --- " << n.second << '\n';
 	}
 
+	cout << "\n\nTOP5:\n";
+
+	std::multimap<int, string> top5;
+
+
+	for (auto n : m)
+		top5.emplace(n.second, n.first);
+
+	int i{};
+	for (auto it = top5.crbegin(); it != top5.crend(); ++it)
+	{
+
+		if (i < 5)
+		{
+			std::cout << it->first << " : " << it->second << '\n';
+			i++;
+		}
+	}
+
+
+
+	//for (auto n : top5)
+	//{
+	//	cout << n.first << " --- " << n.second << '\n';
+	//}
 
     return 0;
 }
