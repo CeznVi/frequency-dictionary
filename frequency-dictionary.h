@@ -1,5 +1,6 @@
 #pragma once
 #include <iostream>
+#include <fstream>
 #include <Windows.h>
 #include <fstream>
 #include <string>
@@ -7,11 +8,13 @@
 #include <iomanip>
 
 
+
 namespace myFD
 {
 	using std::cout;
 	using std::cin;
 	using std::ifstream;
+	using std::ofstream;
 	using std::string;
 	using std::map;
 	using std::multimap;
@@ -23,8 +26,8 @@ namespace myFD
 		string file;
 		bool check(const char c, const string s);
 		void writeTop5();
-		void saveAllwords() const;
-		void seveTop5words() const;
+		
+		
 
 	public:
 		FD() {}
@@ -32,6 +35,10 @@ namespace myFD
 		void printFile() const;
 		void printAllwords() const;
 		void printTop5Words() const;
+
+
+		void saveAllwords() const;
+		void seveTop5words() const;
 
 	};
 	
@@ -151,10 +158,44 @@ namespace myFD
 
 	void myFD::FD::saveAllwords() const
 	{
+		ofstream out;
+		out.open("allword.txt", std::ios::out);
 
+		if (!out)
+		{
+			std::cerr << "Помилка збереження файлу...";
+			exit(1);
+		}
 
+		for (auto n : m)
+			out << n.first << " " << n.second << '\n';
 
+		out.close();
+	}
 
+	void myFD::FD::seveTop5words() const
+	{
+		ofstream out;
+		out.open("top5word.txt", std::ios::out);
+
+		if (!out)
+		{
+			std::cerr << "Помилка збереження файлу...";
+			exit(1);
+		}
+
+		int count{};
+
+		for (auto it = top5.crbegin(); it != top5.crend(); ++it)
+		{
+			if (count < 5)
+			{
+				out << it->first << " " << it->second << '\n';
+			}
+			count++;
+		}
+
+		out.close();
 	}
 
 }

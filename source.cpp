@@ -13,6 +13,9 @@ int main()
 	dictionary.printFile();
 	dictionary.printAllwords();
 	dictionary.printTop5Words();
+	dictionary.saveAllwords();
+	dictionary.seveTop5words();
+
 
     return 0;
 }

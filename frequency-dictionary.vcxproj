@@ -132,6 +132,11 @@
   <ItemGroup>
     <ClInclude Include="frequency-dictionary.h" />
   </ItemGroup>
+  <ItemGroup>
+    <Text Include="allword.txt" />
+    <Text Include="text.txt" />
+    <Text Include="top5word.txt" />
+  </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
   </ImportGroup>
