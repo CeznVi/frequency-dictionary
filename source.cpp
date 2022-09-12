@@ -1,6 +1,5 @@
 ﻿#include "frequency-dictionary.h"
 
-
 using namespace myFD;
 
 int main()
@@ -9,12 +8,7 @@ int main()
 	SetConsoleOutputCP(1251);
 
 	FD dictionary;
-	dictionary.readFile();
-	dictionary.printFile();
-	dictionary.printAllwords();
-	dictionary.printTop5Words();
-	dictionary.saveAllwords();
-	dictionary.seveTop5words();
+	dictionary.menu();
 
 
     return 0;

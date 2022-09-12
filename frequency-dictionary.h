@@ -6,6 +6,7 @@
 #include <string>
 #include <map>
 #include <iomanip>
+#include "Menu.h"
 
 
 
@@ -18,6 +19,11 @@ namespace myFD
 	using std::string;
 	using std::map;
 	using std::multimap;
+	using std::setw;
+	using std::left;
+	using std::right;
+	using namespace MENU;
+	
 
 	class FD
 	{
@@ -26,20 +32,16 @@ namespace myFD
 		string file;
 		bool check(const char c, const string s);
 		void writeTop5();
-		
-		
+		void saveAllwords() const;
+		void saveTop5words() const;
+		void readFile();
 
 	public:
-		FD() {}
-		void readFile();
+		FD() { this->readFile(); }
 		void printFile() const;
 		void printAllwords() const;
 		void printTop5Words() const;
-
-
-		void saveAllwords() const;
-		void seveTop5words() const;
-
+		void menu() const;
 	};
 	
 	void myFD::FD::readFile()
@@ -87,20 +89,22 @@ namespace myFD
 		cout << "         Частотний словник\n";
 		cout << "-----------------------------------------\n";
 
-		cout << std::setw(18) << std::left << "| Слово" << "|";
-		cout << std::setw(5) << std::left << "Кількість застосувань|" << '\n';
+		cout << setw(18) << left << "| Слово" << "|";
+		cout << setw(5) << left << "Кількість застосувань|" << '\n';
 			
 			
 			
 		for (auto n : m)
 		{
 			cout << "-----------------------------------------\n";
-			cout << std::setw(2) << std::left << "|";
-			cout << std::setw(16) << std::left << n.first << "|";
-			cout << std::setw(21) << std::right << n.second << "|\n";
+			cout << setw(2) << left << "|";
+			cout << setw(16) << left << n.first << "|";
+			cout << setw(21) << right << n.second << "|\n";
 			
 		}
 		cout << "-----------------------------------------\n";
+		saveAllwords();
+		system("pause");
 	}
 
 	bool myFD::FD::check(const char c, const string s)
@@ -120,6 +124,7 @@ namespace myFD
 		cout << "-----------------------------------------\n";
 		cout << this->file << '\n';
 		cout << "-----------------------------------------\n";
+		system("pause");
 	}
 
 	void myFD::FD::writeTop5()
@@ -134,8 +139,8 @@ namespace myFD
 		cout << "-----------------------------------------\n";
 		cout << "              ТОП 5 слів\n";
 		cout << "-----------------------------------------\n";		
-		cout << std::setw(22) << std::left << "|Кількість застосувань|";
-		cout << std::setw(17) << std::left << "      Слово" << "|\n";
+		cout << setw(22) << left << "|Кількість застосувань|";
+		cout << setw(17) << left << "      Слово" << "|\n";
 
 
 
@@ -146,14 +151,39 @@ namespace myFD
 			if (count < 5)
 			{
 				cout << "-----------------------------------------\n";
-				cout << std::setw(10) << std::left << "|"; 
-				cout << std::setw(12) << std::left << it->first << '|';
-				cout << std::setw(17) << std::right << it->second << "|\n";
+				cout << setw(10) << left << "|"; 
+				cout << setw(12) << left << it->first << '|';
+				cout << setw(17) << right << it->second << "|\n";
 			}
 			count++;
 		}
 
 		cout << "-----------------------------------------\n";
+		saveTop5words();
+		system("pause");
+	}
+
+	void FD::menu() const
+	{
+		while (true)
+		{
+			system("cls");
+			int c = Menu::select_vertical({ "Роздрукувати вміст файлу",
+											"Роздрукувати частотний словник",
+											"Роздрукувати ТОП-5 вживаних слів",
+											"Вихід" },
+				HorizontalAlignment::Center, 5);
+
+			switch (c)
+			{
+			case 0: printFile(); break;
+			case 1: printAllwords(); break;
+			case 2: printTop5Words(); break;
+			case 3: exit(0);
+			default:
+				break;
+			}
+		}
 	}
 
 	void myFD::FD::saveAllwords() const
@@ -173,7 +203,7 @@ namespace myFD
 		out.close();
 	}
 
-	void myFD::FD::seveTop5words() const
+	void myFD::FD::saveTop5words() const
 	{
 		ofstream out;
 		out.open("top5word.txt", std::ios::out);
